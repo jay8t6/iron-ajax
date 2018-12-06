@@ -318,7 +318,6 @@ iron-request can be used to perform XMLHttpRequests.
       var xhr = this.xhr;
       var responseType = xhr.responseType || xhr._responseType;
       var preferResponseText = !this.xhr.responseType;
-      var prefixLen = (xhr._jsonPrefix && xhr._jsonPrefix.length) || 0;
 
       try {
         switch (responseType) {
@@ -353,9 +352,9 @@ iron-request can be used to perform XMLHttpRequests.
             // as JSON once the prefix of length `prefixLen` is stripped from
             // it. Emulate the behavior above where null is returned on failure
             // to parse.
-            if (prefixLen) {
+            if (xhr._jsonPrefix && xhr._jsonPrefix.length) {
               try {
-                return JSON.parse(xhr.responseText.substring(prefixLen));
+                return JSON.parse(xhr.responseText.replace(xhr._jsonPrefix, ''));
               } catch (_) {
                 console.warn('Failed to parse JSON sent from ' + xhr.responseURL);
                 return null;
