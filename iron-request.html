@@ -354,7 +354,7 @@ iron-request can be used to perform XMLHttpRequests.
             // to parse.
             if (xhr._jsonPrefix && xhr._jsonPrefix.length) {
               try {
-                return JSON.parse(xhr.responseText.replace(xhr._jsonPrefix, ''));
+                return xhr.responseText ? JSON.parse(xhr.responseText.replace(xhr._jsonPrefix, '')) : xhr.responseText;
               } catch (_) {
                 console.warn('Failed to parse JSON sent from ' + xhr.responseURL);
                 return null;
